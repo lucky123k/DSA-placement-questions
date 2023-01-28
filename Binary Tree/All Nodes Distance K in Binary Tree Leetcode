@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    ArrayList<TreeNode> path = new ArrayList<>();
+    public boolean nodetorootpath(TreeNode root,int data){
+        if(root==null){
+            return false;
+        }
+        if(root.val==data){
+            path.add(root);
+            return true;
+        }
+        boolean left=nodetorootpath(root.left,data);
+        if(left){
+            path.add(root);
+            return true;
+        }
+        boolean right=nodetorootpath(root.right,data);
+        if(right){
+            path.add(root);
+            return true;
+        }
+        return false;
+    }
+    public static void kDistDown(TreeNode node,int k,ArrayList<Integer> list,TreeNode blocker){
+        if(node==null || k<0 || node==blocker){
+            return;
+        }
+        if(k==0){
+            list.add(node.val);
+        }
+        kDistDown(node.left,k-1,list,blocker);
+        kDistDown(node.right,k-1,list,blocker);
+    } 
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        ArrayList<Integer> ans = new ArrayList<>();  
+        nodetorootpath(root,target.val); 
+        for(int i=0;i<path.size();i++){
+            kDistDown(path.get(i),k-i,ans,i==0?null:path.get(i-1));
+        }
+        return ans;
+    }
+} 

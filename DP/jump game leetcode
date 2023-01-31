@@ -1,0 +1,22 @@
+class Solution {
+    public boolean canJump(int[] nums) {
+        boolean[] dp = new boolean[nums.length];
+        Arrays.fill(dp,false);
+        dp[nums.length-1]=true;
+        for(int i=dp.length-2;i>=0;i--){
+            int j=i+1;
+            while(j<=i+nums[i] && j<dp.length){
+                if(dp[j]==true){
+                    dp[i]=true;
+                }
+                j++;
+            }
+        }
+
+        if(dp[0]==true){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}

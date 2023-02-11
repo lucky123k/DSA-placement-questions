@@ -1,0 +1,33 @@
+class Solution {
+    public String smallestSubsequence(String s) {
+        Stack<Character> stack = new Stack<Character>();
+        int[] lastindex = new int[26];
+        Arrays.fill(lastindex,0);
+        for(int i=0;i<s.length();i++){
+            lastindex[s.charAt(i)-'a']=i;
+        }
+
+        boolean[] seen = new boolean[26];
+        Arrays.fill(seen,false);
+
+        for(int i=0;i<s.length();i++){
+            int cur = s.charAt(i)-'a';
+            if(seen[cur]){
+                continue;
+            }
+            while(stack.size()>0 && stack.peek()>s.charAt(i) && i<lastindex[stack.peek()-'a']){
+                seen[stack.peek()-'a']=false;
+                stack.pop();
+            }
+            stack.push(s.charAt(i));
+            seen[cur]=true; 
+        }
+        String res="";
+        while(stack.size()>0){
+            res+=stack.pop();
+        }
+        StringBuilder res1 = new StringBuilder();
+        res1.append(res);
+        return (res1.reverse()).toString();
+    }
+}

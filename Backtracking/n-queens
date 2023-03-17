@@ -1,0 +1,48 @@
+class Solution {
+    public static void solve(char[][] temp, boolean[][] board, int row, boolean[] cols, boolean[] ndiag, boolean[] rdiag, List<List<String>> ans){
+        if(row==board.length){
+            ArrayList<String>cur=new ArrayList<>();
+            String s="";
+            for(int i=0;i<board.length;i++){
+                for(int j=0;j<board.length;j++){
+                    s+=temp[i][j];
+                }
+                cur.add(s);
+                s="";
+            }
+            ans.add(cur);
+        }
+
+        for(int col=0;col<board.length;col++){
+            if(cols[col]== false && ndiag[row+col]==false && rdiag[row-col+board.length-1]==false){
+                board[row][col]=true;
+                cols[col]=true;
+                ndiag[row+col]=true;
+                rdiag[row-col+board.length-1]=true;
+                temp[row][col]='Q';
+                solve(temp,board,row+1,cols,ndiag,rdiag,ans);
+                board[row][col]=false;
+                cols[col]=false;
+                ndiag[row+col]=false;
+                rdiag[row-col+board.length-1]=false;
+                temp[row][col]='.';
+            }
+        }
+    }
+    public List<List<String>> solveNQueens(int n) { 
+        List<List<String>> ans = new ArrayList<>();
+        char[][] temp = new char[n][n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                temp[i][j]='.';
+            }
+        }      
+        boolean[][] board = new boolean[n][n];
+        boolean[] cols = new boolean[n];
+        boolean[] ndiag = new boolean[2*n - 1];
+        boolean[] rdiag = new boolean[2*n - 1];
+
+        solve(temp,board,0,cols,ndiag,rdiag,ans); 
+        return ans;
+    }
+}

@@ -1,0 +1,31 @@
+
+class Solution {
+    public int kadans(int[] arr){
+        int csum=0;
+        int osum=Integer.MIN_VALUE;
+        for(int i=0;i<arr.length;i++){
+            if(csum>=0){
+                csum+=arr[i];
+            }else{
+                csum=arr[i];
+            }
+            osum=Math.max(osum,csum);
+        }
+        return osum;
+    }
+    int maximumSumRectangle(int R, int C, int M[][]) {
+        int[] col_sum = new int[M.length];
+        int max = Integer.MIN_VALUE;
+        for(int cstart=0;cstart<M[0].length;cstart++){
+            Arrays.fill(col_sum,0);
+            for(int cend=cstart;cend<M[0].length;cend++){
+                for(int i=0;i<M.length;i++){
+                    col_sum[i]+=M[i][cend];
+                }
+                int currmax=kadans(col_sum);
+                max=Math.max(max,currmax);
+            }
+        }
+        return max;
+    }
+};

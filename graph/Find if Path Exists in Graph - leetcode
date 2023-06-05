@@ -1,0 +1,44 @@
+class Solution {
+    static class Edge {
+        int source;
+        int nbr;
+
+        Edge(int source, int nbr) {
+            this.source = source;
+            this.nbr = nbr;
+        }
+    }
+
+    public boolean res(ArrayList<Edge>[] graph, int source, int destination, boolean[] visited) {
+        if (source == destination) {
+            return true;
+        }
+
+        visited[source] = true;
+        for (Edge edge : graph[source]) {
+            if (!visited[edge.nbr]) {
+                boolean hasNbrPath = res(graph, edge.nbr, destination, visited);
+                if (hasNbrPath) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        ArrayList<Edge>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            graph[u].add(new Edge(u, v));
+            graph[v].add(new Edge(v, u));
+        }
+        boolean[] visited = new boolean[n];
+        boolean flag = res(graph, source, destination, visited);
+        return flag;
+    }
+}
